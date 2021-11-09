@@ -5,14 +5,17 @@ var cors = require("cors")
 var path = require('path')
 var app = express()
 var calculatorRouter = require('./routes/calculatorRoute');
-var userRoute = require('./routes/userRoute')
+// var userRoute = require('./routes/userRoute')
+var awsUserRoute = require('./routes/awsUserRoute')
+var timelineRoute = require('./routes/timelineRoute')
 app.use(express.static(__dirname+'/public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors())
 var MongoConnect = require('./mongoConnect')
 app.use('/calculator', calculatorRouter);
-app.use('/user', userRoute);
+app.use('/user', awsUserRoute);
+app.use('/posts', timelineRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -30,7 +33,7 @@ app.use(function(err, req, res, next) {
   // res.sendFile((__dirname+'/404.html'));
 });
 
-var port = process.env.port || 3000;
+var port = process.env.PORT || 3000;
 
 app.listen(port,()=>{
     console.log("App listening to: "+port);
